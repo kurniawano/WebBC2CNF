@@ -1,0 +1,12 @@
+<html>
+<head>
+    <title>BC2CNF Converter on web</title>
+</head>
+<body>
+<h1>BC2CNF Converter on Web</h1>
+<form action="/bc2cnf/submit/" method="post">{% csrf_token %}
+  <input type="file" name="bc2file" accept=".bc">
+  <input type="submit">
+</form>
+</body>
+</html>
