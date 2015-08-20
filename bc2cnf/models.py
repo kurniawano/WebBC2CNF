@@ -1,6 +1,23 @@
 from django.db import models
-
+from django.forms import ModelForm
+import random
+import string
 # Create your models here.
+N=4
 class Submission(models.Model):
-	datetime=models.DateTimeField()
-	bcfile=models.FileField(upload_to='bc2files')
+#	datetime=models.DateTimeField()
+        userid=models.CharField(max_length=8, blank=False, null=False, default=''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N)))
+	bcfile=models.FileField(upload_to='files', blank=False, null=False)
+	def save(self, *args, **kwargs):
+		split_name=self.bcfile.name.split('.')
+		old_name=split_name[0]
+		random_str=args[0]
+		ext_name=split_name[1]
+		new_name=old_name+'_'+random_str+'.'+ext_name
+		self.bcfile.name=new_name
+		super(Submission, self).save(*args, **kwargs)
+
+class SubmissionForm(ModelForm):
+	class Meta:
+		model = Submission
+		fields = ['userid','bcfile']
