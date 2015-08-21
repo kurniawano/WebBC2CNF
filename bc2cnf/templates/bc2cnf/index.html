@@ -7,9 +7,9 @@
 {% block content %}
 <form enctype="multipart/form-data" method="post" action="" accept=".bc">
 {% csrf_token %}
-{{form.bcfile}}
-{{form.userid}}
-<br><Input type="submit" value="submit">
+<p>Select BC file: {{form.bcfile}}</p>
+<p>Student id: {{form.userid}}</p>
+<p><Input type="submit" value="submit"></p>
 </form>
 {% endblock %}
 </body>
