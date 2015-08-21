@@ -3,6 +3,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from .models import Submission, SubmissionForm
 from subprocess import call
 from StringIO import StringIO
+from django.conf import settings
 import os
 
 # Create your views here.
@@ -28,10 +29,10 @@ def convert(request, form):
     filename=request.FILES['bcfile'].name    
     filenameNoExt=filename.split('.')[0]
     outname=filenameNoExt+'.cnf'
-    fullpath='files/'+filenameNoExt
+    fullpath=settings.MEDIA_ROOT+filenameNoExt
     call(['bc2cnf','-v','-nosimplify','-nocoi',fullpath+'.bc',fullpath+'.cnf'])
     fdownld=StringIO(file(fullpath+'.cnf','r').read())
-    call(['rm',os.getcwd()+'/'+fullpath+'.bc'])
-    call(['rm',os.getcwd()+'/'+fullpath+'.cnf'])
+    call(['rm',fullpath+'.bc'])
+    call(['rm',fullpath+'.cnf'])
     #return HttpResponse(fdownld.read(),content_type='text/plain')
     return render_to_response('bc2cnf/convert.html',{'fdownld':fdownld.read()})
